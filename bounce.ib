@@ -1,0 +1,51 @@
+(pong)
+0   (`paddle x`)
+~
+1   (`ball dx`)
+1   (`ball dy`)
+12 (`ball x`)
+1   (`ball y`)
+;(
+ [clear screen]
+ 27,99,
+ [/clear screen]
+ "#",     (top of board)
+ [draw ball]
+ v        (pop `ball y` into reg)
+ 0;(      (init `i`)
+  :^=?(   (if `i` == `ball y`)
+   ~^~    (store `ball y` in second stack)
+   \:v\   (pop `ball x` into reg)
+   0;(    (init `j`)
+    " ",
+    1+
+   :^=?)  (break out of loop when we reach `ball x`)
+   $      (delete `j`)
+   "O",   (draw the actual ball)
+   ~v~    (restore `ball y` into reg)
+  ;)
+  10,     (print newline)
+  1+      (increment `i`)
+ :15>?)   (exit if `i` > 20)
+ $        (delete `i`)
+ ^        (restore `ball y`)
+ [/draw ball]
+ [move ball]
+ v~^~      (stack 1: `dx, dy, x` stack 2: `y`)
+ \v~^\v:^~ (stack 1: `dx, x`     stack 2: `dy, dy, y`)
+ v:^       (stack 1: `dx, dx, x`)
+ +~+~      (update x and y)
+ [bounce]  (stack 1: `dx, x` stack 2: `dy, y`)
+ :2<?(\$1\;)     (set `dx` to +1 if `x` < 2)
+ :20>?(\$0_1-\;) (set `dx` to -1 if `x` > 20)
+ ~
+ :2<?(\$1\;)  (set `dy` to +1 if `y` < 2)
+ :15>?(\$0_1-\;)
+ ~
+ [/bounce]
+ ~\v~^\    (stack 1: `dx, dy, x`    stack 2: `y`)
+ ~v~^      (stack 1: `dx, dy, x, y` stack 2: ``)
+ [/move ball]
+ [wait]
+ 0;(w1+:35>?)$
+)

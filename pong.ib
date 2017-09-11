@@ -1,0 +1,77 @@
+(pong)
+0   (`paddle x`)
+~
+1   (`ball dx`)
+1   (`ball dy`)
+17  (`ball x`)
+1   (`ball y`)
+;(
+ [clear screen]
+ 27,99,
+ [/clear screen]
+ "#",     (top of board)
+ [draw ball]
+ v        (pop `ball y` into reg)
+ 0;(      (init `i`)
+  :^=?(   (if `i` == `ball y`)
+   ~^~    (store `ball y` in second stack)
+   \:v\   (pop `ball x` into reg)
+   0;(    (init `j`)
+    " ",
+    1+
+   :^=?)  (break out of loop when we reach `ball x`)
+   $      (delete `j`)
+   "O",   (draw the actual ball)
+   ~v~    (restore `ball y` into reg)
+  ;)
+  10,     (print newline)
+  1+      (increment `i`)
+ :20>?)   (exit if `i` > 20)
+ $        (delete `i`)
+ ^        (restore `ball y`)
+ [/draw ball]
+ [draw paddle]
+ ~:v~     (copy `paddle x` into register)
+ 0;(      (init `k`)
+ :^=?[    (if we reached `paddle x`, exit)
+  " ",1+
+ )   ]
+ $        (delete `k`)
+ "-----",,,,,10, (actually draw paddle)
+ [/draw paddle]
+ [move ball]
+ v~^~      (stack 1: `dx, dy, x` stack 2: `y`)
+ \v~^\v:^~ (stack 1: `dx, x`     stack 2: `dy, dy, y`)
+ v:^       (stack 1: `dx, dx, x`)
+ +~+~      (update x and y)
+ [bounce]  (stack 1: `dx, x` stack 2: `dy, y`)
+ :2<?(\$1\;)     (set `dx` to +1 if `x` < 2)
+ :20>?(\$0_1-\;) (set `dx` to -1 if `x` > 20)
+ ~
+ :2<?(\$1\;)  (set `dy` to +1 if `y` < 2)
+ :21>?(       (deal with if the ball hits the bottom edge)
+  v~^~     (move `y` and `dy` to 1st stack)
+  v~^~
+  :v       (put a copy of `paddle x` into reg)
+  ~^\v~^   (move `y` and `dy` back to 2nd stack, leaving `paddle x` on top of 1st stack)
+  ~\v~^
+  ~        (move to 1st stack: `...x, paddle x`)
+  v        (put `paddle x` into reg)
+  :^1->?(  (if `x` >= `paddle x`)
+   :^6+<?( (if `x` <= `paddle x` + 5)
+    ~\$0_1-\~  (set `dy` to -1)
+   [)
+  ;)
+   &       (if we did not land on the paddle, terminate)
+  ;]
+  ~        (move back to 2nd stack)
+ ;)
+ ~
+ [/bounce]
+ ~\v~^\    (stack 1: `dx, dy, x`    stack 2: `y`)
+ ~v~^      (stack 1: `dx, dy, x, y` stack 2: ``)
+ [/move ball]
+ [wait]
+ k.10,
+ 0;(w1+:1025>?)$
+)
