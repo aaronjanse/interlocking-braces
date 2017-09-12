@@ -1,3 +1,6 @@
+Demo of program flow. The numbers and underscores are for visual effect, and the braces are what make the instruction pointer jump around.
+
+![Demo of program flow](https://raw.githubusercontent.com/aaronduino/interlocking-braces/master/demo.gif)
 
 Control Flow:  
 `(` `)` `[` `]` `{` `}` jump to matching brace  
