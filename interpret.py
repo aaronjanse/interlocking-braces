@@ -237,6 +237,14 @@ class GetInt(Char):
         state.push(value)
 
 @add_to_chain
+class GetChar(Char):
+    accepts = '@'
+
+    def visit(self, state):
+        value = ord(state.callbacks.get_char())
+        state.push(value)
+
+@add_to_chain
 class GetKey(Char):
     accepts = 'k'
 

@@ -1,6 +1,10 @@
 import curses
 from curses import wrapper
 import sys
+import time
+from ast import literal_eval
+
+import readchar
 
 class IOCallbacks(object):
     pass
@@ -14,6 +18,11 @@ class DefualtCallbacks(IOCallbacks):
     @staticmethod
     def get_input():
         return input('?: ')
+
+    @staticmethod
+    def get_char():
+        char = literal_eval(repr(sys.stdin.read(1)))
+        return char
 
     @classmethod
     def get_keypress(cls, win=None):
