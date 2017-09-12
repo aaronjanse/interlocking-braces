@@ -2,6 +2,17 @@ Demo of program flow. The numbers and underscores are for visual effect, and the
 
 ![Demo of program flow](https://raw.githubusercontent.com/aaronduino/interlocking-braces/master/demo.gif)
 
+## How to run the interpreter
+The only argument is the file that you want to run.
+
+For example, this is how you would run the file `bounce.ib`:
+
+```
+python3 __main__.py bounce.ib
+```
+
+## Language Specs
+
 Control Flow:  
 `(` `)` `[` `]` `{` `}` jump to matching brace  
 
